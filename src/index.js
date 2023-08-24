@@ -5,7 +5,15 @@ const { OpusEncoder } = require("@discordjs/opus");
 
 const { generateDependencyReport } = require("@discordjs/voice");
 
+const pathToFfmpeg = require("ffmpeg-static");
+
 console.log(generateDependencyReport());
+console.log(pathToFfmpeg);
+
+const ytdl = require("ytdl-core");
+const ytsr = require("ytsr");
+
+const encoder = new OpusEncoder(48000, 2);
 
 const client = new Client({
   intents: [
