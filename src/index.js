@@ -1,6 +1,11 @@
 /// runs with command nodemon
 require("dotenv").config();
 const { Client, IntentsBitField } = require("discord.js");
+const { OpusEncoder } = require("@discordjs/opus");
+
+const { generateDependencyReport } = require("@discordjs/voice");
+
+console.log(generateDependencyReport());
 
 const client = new Client({
   intents: [
@@ -15,26 +20,24 @@ client.on("ready", (c) => {
   console.log(`${c.user.tag} is online`);
 });
 
-client.on("messageCreate", (msg) => {
-  if (msg.author.bot) {
-    return;
+client.on("interactionCreate", (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === "play") {
+    interaction.reply("Playing song...");
   }
-  if (msg.content === "puto") {
-    msg.reply("puta tu kola");
+  if (interaction.commandName === "pause") {
+    interaction.reply("Paused song...");
   }
-  if (msg.content === "cuando murio halo?") {
-    msg.reply("en reach");
+  if (interaction.commandName === "stop") {
+    interaction.reply("Stopping song..");
   }
-  if (msg.content === "jose review") {
-    msg.reply("me caga ese we");
+  if (interaction.commandName === "queue") {
+    interaction.reply("Here is the current list of songs...");
   }
-  if (msg.content === "angel review") {
-    msg.reply("ese we es mi apa");
+  if (interaction.commandName === "clear") {
+    interaction.reply("queue cleared");
   }
-  if (msg.content === "rigo review") {
-    msg.reply("ese kabron wele a sebolla");
-  }
-  console.log(`${msg.author.username} said ${msg.content}`);
 });
 
 client.login(process.env.TOKEN);
