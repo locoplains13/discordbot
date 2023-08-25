@@ -1,26 +1,24 @@
 require("dotenv").config();
-const { REST, Routes } = require("discord.js");
+const { REST, Routes, ApplicationCommandOptionType } = require("discord.js");
+const { client } = require("discord.js");
 
 const commands = [
   {
     name: "play",
     description: "Plays a given song",
-  },
-  {
-    name: "pause",
-    description: "Pauses the current song",
-  },
-  {
-    name: "stop",
-    description: "Stops and clears the current queue",
-  },
-  {
-    name: "queue",
-    description: "Displays the current song queue",
-  },
-  {
-    name: "clear",
-    description: "Clears the current queue except the current song",
+    options: [
+      {
+        name: "channel",
+        description: "The channel the bot is to join",
+        type: ApplicationCommandOptionType.Channel,
+        required: true,
+      },
+      {
+        name: "url",
+        description: "The URL of the song you wish to play",
+        type: ApplicationCommandOptionType.Channel,
+      },
+    ],
   },
 ];
 
