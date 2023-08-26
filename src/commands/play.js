@@ -25,10 +25,9 @@ module.exports = {
     song_name = song_name.substring(0, 43);
 
     if (!interaction.member.voice.channel)
-      return interaction.reply({
-        content: "Tienes que estar en un canal para poner musica",
-        ephemeral: true,
-      });
+      return interaction.reply(
+        "Tienes que estar en un canal para poner musica"
+      );
 
     let player = client.manager.players.get(interaction.guild.id);
 

@@ -17,12 +17,14 @@ module.exports = {
 
     console.log(player);
 
-    if (!player) return interaction.reply("No hay rokola en este server");
+    if (!player) return interaction.reply("Pon musica primero, pa skipearla");
 
     const channel = interaction.member.voice;
 
-    if (!channel)
-      return interaction.reply("Tienes que estar en un canal de voz, kabron");
+    if (!interaction.member.voice.channel)
+      return interaction.reply(
+        "Tienes que estar en un canal skipear musica, kabron"
+      );
 
     if (!player.queue.current)
       return interaction.reply("No tengo puesta musica pa skipear");
