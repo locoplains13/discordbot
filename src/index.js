@@ -24,8 +24,8 @@ for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.data.name, command);
   commands.push(command.data.toJSON());
-  console.log(commandFiles);
 }
+console.log(commandFiles);
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
