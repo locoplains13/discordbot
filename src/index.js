@@ -72,10 +72,10 @@ client.on("interactionCreate", (interaction) => {
 //music manager
 const nodes = [
   {
-    host: "54.38.198.24",
-    password: "stonemusicgay",
-    port: 88,
-    secure: false,
+    host: "lavalink.lexnet.cc",
+    password: "lexn3tl@val!nk",
+    port: 443,
+    secure: true,
   },
 ];
 

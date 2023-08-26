@@ -11,6 +11,8 @@ module.exports = {
     if (player.playing)
       return interaction.reply("Ya esta puesta la musica, wey");
 
+    if (!player.playing && !player.queue.current)
+      return interaction.reply("No hay musica pa resumer");
     if (!interaction.member.voice.channel)
       return interaction.reply(
         "Tienes que estar en un canal para resumir la musica"
