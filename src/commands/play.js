@@ -73,6 +73,7 @@ module.exports = {
       duration = `${duration_minutes}:${duration_secs}`;
     }
 
+    if (songs.tracks[0].isStream) duration = "Live";
     interaction.reply(
       `${bold(songs.tracks[0].title)}. \`${duration}\` Pedida por ${italic(
         interaction.user.tag
