@@ -16,12 +16,12 @@ module.exports = {
     .setDescription("Pone una rola en el canal de voz en el que estas")
     .addStringOption((option) =>
       option
-        .setName("Cancion")
+        .setName("song_name")
         .setDescription("El nombre o link de una cancion que quieras")
         .setRequired(true)
     ),
   async execute(client, interaction) {
-    let song_name = interaction.options.getString("Cancion");
+    let song_name = interaction.options.getString("song_name");
     song_name = song_name.substring(0, 43);
 
     if (!interaction.member.voice.channel)
@@ -75,7 +75,7 @@ module.exports = {
     }
 
     interaction.reply(
-      `${bold(songs.tracks[0].title)}. \`${duration}\` Pedidad por ${italic(
+      `${bold(songs.tracks[0].title)}. \`${duration}\` Pedida por ${italic(
         interaction.user.tag
       )}.`
     );
