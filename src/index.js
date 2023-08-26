@@ -1,80 +1,110 @@
-/// runs with command nodemon
+const { Client, GatewayIntentBits, Collection } = require("discord.js");
+const { REST, Routes } = require("discord.js");
+const fs = require("node:fs");
+const path = require("node:path");
+const { Manager } = require("erela.js");
 require("dotenv").config();
-const { Client, IntentsBitField, VoiceChannel } = require("discord.js");
-const { OpusEncoder } = require("@discordjs/opus");
-
-const {
-  generateDependencyReport,
-  getVoiceConnections,
-} = require("@discordjs/voice");
-
-const pathToFfmpeg = require("ffmpeg-static");
-
-console.log(generateDependencyReport());
-console.log(pathToFfmpeg);
-
-const fs = require("fs");
-const ytdl = require("ytdl-core");
-const ytsr = require("ytsr");
-
-const { AudioPlayerStatus, entersState } = require("@discordjs/voice");
-
-const { joinVoiceChannel } = require("@discordjs/voice");
-const { getVoiceConnection } = require("@discordjs/voice");
-
-const encoder = new OpusEncoder(48000, 2);
 
 const client = new Client({
   intents: [
-    IntentsBitField.Flags.Guilds,
-    IntentsBitField.Flags.GuildMembers,
-    IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.MessageContent,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildMembers,
   ],
 });
 
-const guild = client.guilds.cache.get(process.env.GUILD_ID);
-client.application.commands.fetch().then((c) => console.log(c));
-client.on("ready", (c) => {
-  console.log(`${c.user.tag} is online`);
+client.commands = new Collection();
+
+const commands = [];
+const commandFiles = fs
+  .readdirSync("./src/commands")
+  .filter((file) => file.endsWith(".js"));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.data.name, command);
+  commands.push(command.data.toJSON());
+  console.log(commandFiles);
+}
+
+const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+
+(async () => {
+  try {
+    console.log(
+      `Started refreshing ${commands.length} application (/) commands`
+    );
+
+    const data = await rest.put(
+      Routes.applicationCommands(process.env.CLIENT_ID),
+      { body: commands }
+    );
+
+    console.log(
+      `Successfully reloaded ${data.length} application (/) commands`
+    );
+  } catch (error) {
+    console.error(error);
+  }
+})();
+
+client.once("ready", () => {
+  client.manager.init(client.user.id);
+  console.log(`${client.user.tag} is now online`);
 });
 
 client.on("interactionCreate", (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+  if (!interaction.isCommand()) return;
 
-  if (interaction.commandName === "ping") {
-    console.log(
-      `${interaction.user.tag} used command ${interaction.commandName}`
-    );
-    interaction.reply("pong");
-  }
-  if (interaction.commandName === "play") {
-    const voiceChannel = interaction.options.getChannel("channel");
-    console.log(voiceChannel);
-    ytdl("https://www.youtube.com/watch?v=FS0SzSE9Fic").pipe(
-      fs.createWriteStream("C:/Users/alroc/Downloads/video.mp3")
-    );
-    const voiceConnection = joinVoiceChannel({
-      channelId: voiceChannel.id,
-      guildId: interaction.guildId,
-      adapterCreator: interaction.guild.voiceAdapterCreator,
+  const command = client.commands.get(interaction.commandName);
+  if (!command) return;
+
+  try {
+    command.execute(client, interaction);
+  } catch (error) {
+    interaction.reply({
+      content: "There was an error executing this command.",
+      ephemeral: true,
     });
-  }
-  if (interaction.commandName === "pause") {
-    interaction.reply("Paused song...");
-    console.log(
-      `${interaction.user.tag} used command ${interaction.commandName}`
-    );
-  }
-  if (interaction.commandName === "stop") {
-    interaction.reply("Stopping song..");
-  }
-  if (interaction.commandName === "queue") {
-    interaction.reply("Here is the current list of songs...");
-  }
-  if (interaction.commandName === "clear") {
-    interaction.reply("queue cleared");
   }
 });
 
+//music manager
+const nodes = [
+  {
+    host: "54.38.198.24",
+    password: "stonemusicgay",
+    port: 88,
+    secure: false,
+  },
+];
+
+// Assign Manager to the client variable
+client.manager = new Manager({
+  // The nodes to connect to, optional if using default lavalink options
+  nodes,
+  // Method to send voice data to Discord
+  send: (id, payload) => {
+    const guild = client.guilds.cache.get(id);
+    // NOTE: FOR ERIS YOU NEED JSON.stringify() THE PAYLOAD
+    if (guild) guild.shard.send(payload);
+  },
+});
+
+// Emitted whenever a node connects
+client.manager.on("nodeConnect", (node) => {
+  console.log(`Node "${node.options.identifier}" connected.`);
+});
+
+// Emitted whenever a node encountered an error
+client.manager.on("nodeError", (node, error) => {
+  console.log(
+    `Node "${node.options.identifier}" encountered an error: ${error.message}.`
+  );
+});
+
+// THIS IS REQUIRED. Send raw events to Erela.js
+client.on("raw", (d) => client.manager.updateVoiceState(d));
+
+// bot starts and logs in
 client.login(process.env.TOKEN);
