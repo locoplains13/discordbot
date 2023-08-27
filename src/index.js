@@ -25,7 +25,6 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
   commands.push(command.data.toJSON());
 }
-console.log(commandFiles);
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
@@ -72,8 +71,8 @@ client.on("interactionCreate", (interaction) => {
 //music manager
 const nodes = [
   {
-    host: "lavalink.lexnet.cc",
-    password: "lexn3tl@val!nk",
+    host: process.env.HOST,
+    password: process.env.PASSWORD,
     port: 443,
     secure: true,
   },
