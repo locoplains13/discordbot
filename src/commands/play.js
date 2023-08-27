@@ -22,12 +22,17 @@ module.exports = {
     ),
   async execute(client, interaction) {
     let song_name = interaction.options.getString("song_name");
-    song_name = song_name.substring(0, 43);
-
+    const listRegex = /list/;
+    const liveRegex = /live/;
+    if (song_name.search(listRegex) > -1) {
+      song_name = song_name.substring(0, 43);
+    } else if (song_name.search(liveRegex) > -1) {
+      song_name =
+        song_name.substring(0, 24) + "watch?v=" + song_name.substring(29, 40);
+      console.log(song_name);
+    }
     if (!interaction.member.voice.channel)
-      return interaction.reply(
-        "Tienes que estar en un canal para poner musica"
-      );
+      await interaction.reply("Tienes que estar en un canal para poner musica");
 
     let player = client.manager.players.get(interaction.guild.id);
 
@@ -74,7 +79,7 @@ module.exports = {
     }
 
     if (songs.tracks[0].isStream) duration = "Live";
-    interaction.reply(
+    await interaction.reply(
       `${bold(songs.tracks[0].title)}. \`${duration}\` Pedida por ${italic(
         interaction.user.tag
       )}.`
