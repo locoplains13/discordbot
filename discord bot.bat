@@ -1,3 +1,4 @@
-node .
 
-PAUSE
+:x
+node .
+goto x
