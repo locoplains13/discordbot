@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require("discord.js");
-const play = require("./play");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("stop")
