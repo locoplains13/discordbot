@@ -73,8 +73,8 @@ const nodes = [
   {
     host: process.env.HOST,
     password: process.env.PASSWORD,
-    port: 443,
-    secure: true,
+    port: 88,
+    secure: false,
   },
 ];
 

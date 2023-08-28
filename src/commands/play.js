@@ -24,6 +24,7 @@ module.exports = {
     let song_name = interaction.options.getString("song_name");
     const listRegex = /list/;
     const liveRegex = /live/;
+    const spotify = /spotify/;
     if (song_name.search(listRegex) > -1) {
       song_name = song_name.substring(0, 43);
     } else if (song_name.search(liveRegex) > -1) {
@@ -70,7 +71,7 @@ module.exports = {
 
     if (duration_secs < 10) duration_secs = 0 + String(duration_secs);
     if (duration_minutes < 10 && !duration_hours)
-      duration_minutes = 0 + String(duration_minutes);
+      duration_minutes = 0 + parseInt(String(duration_minutes));
 
     if (duration >= 3600) {
       duration = `${duration_hours}:${duration_minutes}:${duration_secs}`;
