@@ -19,6 +19,8 @@ module.exports = {
       );
 
     player.play();
+    player.position = player.queue.current.duration;
+    console.log(`position after resume is ${player.position}`);
 
     interaction.reply("Se puso la rola de vuelta.");
   },

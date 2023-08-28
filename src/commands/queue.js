@@ -1,5 +1,6 @@
+"use strict";
+
 const { SlashCommandBuilder } = require("discord.js");
-const { Manager } = require("erela.js");
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
