@@ -15,11 +15,7 @@ module.exports = {
   async execute(client, interaction) {
     const player = interaction.client.manager.get(interaction.guild.id);
 
-    console.log(player);
-
     if (!player) return interaction.reply("Pon musica primero, pa skipearla");
-
-    const channel = interaction.member.voice;
 
     if (!interaction.member.voice.channel)
       return interaction.reply(
