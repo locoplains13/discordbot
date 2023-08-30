@@ -69,7 +69,7 @@ module.exports = {
     duration_minutes = String(duration_minutes).substring(1, 5);
     duration_minutes = parseInt(parseFloat(duration_minutes) * 60);
 
-    if (duration_secs < 10) duration_secs = 0 + String(duration_secs);
+    if (duration_secs < 10) duration_secs = 0 + String(parseInt(duration_secs));
     if (duration_minutes < 10 && !duration_hours)
       duration_minutes = 0 + parseInt(String(duration_minutes));
 
