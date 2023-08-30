@@ -8,8 +8,7 @@ module.exports = {
     .setDescription("comando en progreso"),
 
   async execute(client, interaction) {
-    let path =
-      "C:/Users/alroc/Documents/DiscordBot/src/commands/playlists.json";
+    let path = "playlists.json";
 
     // reading a JSON file synchronously
     const playlist = fs.readFileSync(path);
