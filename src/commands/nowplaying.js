@@ -6,7 +6,9 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("nowplaying")
-    .setDescription("Muestra la cancion puesta orita"),
+    .setDescription(
+      "Muestra la cancion puesta orita y lo que le falta pa que se acabe"
+    ),
 
   async execute(client, interaction) {
     const player = client.manager.players.get(interaction.guild.id);
