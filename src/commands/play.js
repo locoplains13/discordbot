@@ -9,6 +9,7 @@ const {
   blockQuote,
 } = require("discord.js");
 const { Manager } = require("erela.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,7 +31,6 @@ module.exports = {
     } else if (song_name.search(liveRegex) > -1) {
       song_name =
         song_name.substring(0, 24) + "watch?v=" + song_name.substring(29, 40);
-      console.log(song_name);
     }
     if (!interaction.member.voice.channel)
       await interaction.reply("Tienes que estar en un canal para poner musica");
@@ -58,7 +58,8 @@ module.exports = {
 
     let duration_secs;
     duration_secs = duration % 60;
-    duration_secs = String(duration_secs);
+    duration_secs = parseInt(String(duration_secs).substring(0, 2));
+    console.log(duration_secs);
 
     duration = duration / 60;
 
@@ -85,5 +86,6 @@ module.exports = {
         interaction.user.tag
       )}.`
     );
+    console.log(player);
   },
 };
