@@ -16,9 +16,10 @@ module.exports = {
       "https://imgur.com/ugZvEdA",
       "https://imgur.com/gQmYOhW",
       "https://imgur.com/z7GgRRM",
+      "https://imgur.com/AhyFPCY",
     ];
 
-    let randomPic = Math.floor(Math.random() * link.length - 1);
+    let randomPic = Math.floor(Math.random() * link.length);
 
     interaction.reply(`${link[randomPic]}`);
   },

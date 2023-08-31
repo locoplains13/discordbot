@@ -16,12 +16,12 @@ module.exports = {
     .setDescription("Pone una rola en el canal de voz en el que estas")
     .addStringOption((option) =>
       option
-        .setName("song_name")
+        .setName("cancion")
         .setDescription("El nombre o link de una cancion que quieras")
         .setRequired(true)
     ),
   async execute(client, interaction) {
-    let song_name = interaction.options.getString("song_name");
+    let song_name = interaction.options.getString("cancion");
     const listRegex = /list/;
     const liveRegex = /live/;
     const spotify = /spotify/;

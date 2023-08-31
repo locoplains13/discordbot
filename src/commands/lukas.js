@@ -28,12 +28,13 @@ module.exports = {
       "https://imgur.com/COA2pzf",
       "https://imgur.com/ByHgZmR",
       "https://imgur.com/rg7Ocbd",
+      "https://imgur.com/7EMi1a1",
       "https://imgur.com/I2Ckwuz",
       "https://imgur.com/ol0EnOs",
       "https://imgur.com/cj9hYQn",
     ];
 
-    let randomPic = Math.floor(Math.random() * link.length - 1);
+    let randomPic = Math.floor(Math.random() * link.length);
 
     interaction.reply(`${link[randomPic]}`);
   },
